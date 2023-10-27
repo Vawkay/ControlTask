@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "343000194460",
+    "project_id": "controltask-926b5",
+    "storage_bucket": "controltask-926b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343000194460:android:d05f3456928ae9d971bc59",
+        "android_client_info": {
+          "package_name": "com.example.controltask"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdHUz-0haYmTKwSYmph8yr-3HCBk1IUWE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
