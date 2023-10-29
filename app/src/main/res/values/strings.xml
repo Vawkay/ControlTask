@@ -1,6 +1,22 @@
 <resources>
-    <string name="app_name">ControlTask</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main2">MainActivity2</string>
+    <string name="app_name" translatable="false">ControlTask</string>
+
+    <!-- Generic -->
+    <string name="text_email" translatable="false">E-mail</string>
+    <string name="text_password" translatable="false">Senha</string>
+    <string name="hint_email" translatable="false">seuemail@email.com</string>
+    <string name="hint_password" translatable="false">********</string>
+    <string name="text_register_account" translatable="false">Criar Conta</string>
+
+    <!-- Login Fragment -->
+
+    <string name="text_button_login_fragment" translatable="false">Login</string>
+    <string name="text_button_register_fragment" translatable="false">Criar conta</string>
+    <string name="text_recover_login_fragment" translatable="false">Recuperar conta</string>
+
+    <!-- Recover Account Fragment -->
+    <string name="text_recover_recover_fragment" translatable="false">Recuperar conta</string>
+    <string name="text_button_recover_fragment" translatable="false">Enviar e-mail</string>
+
+
 </resources>
