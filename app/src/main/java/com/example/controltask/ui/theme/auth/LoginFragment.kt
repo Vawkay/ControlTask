@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.controltask.R
 import com.example.controltask.databinding.FragmentLoginBinding
+import com.example.controltask.helper.FirebaseHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -57,7 +58,7 @@ class LoginFragment : Fragment() {
         var password = binding.edtPassword.text.toString().trim()
 
         if (email.isNotEmpty()) {
-            if (password.isNotEmpty()){
+            if (password.isNotEmpty()) {
 
                 binding.progressBar.isVisible = true
 
@@ -79,7 +80,13 @@ class LoginFragment : Fragment() {
                     // Sign in success, take the user to the home screen
                     findNavController().navigate(R.id.action_global_homeFragment)
                 } else {
-                    // If sign in fails, hide the progress bar.
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(
+                        requireContext(),
+                        FirebaseHelper.validError(task.exception?.message ?: ""),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    // If sign in fails, hide the progress bar."
                     binding.progressBar.isVisible = false
                 }
             }

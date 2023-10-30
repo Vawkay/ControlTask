@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.controltask.databinding.FragmentRecoverAccountBinding
+import com.example.controltask.helper.FirebaseHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -60,9 +61,16 @@ class RecoverAccountFragment : Fragment() {
         auth.sendPasswordResetEmail(email)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    // Task in success, show a message to the user.
+                    // Task in success, show a success message to the user.
                     Toast.makeText(requireContext(), "E-mail enviado com sucesso", Toast.LENGTH_SHORT).show()
 
+                } else {
+                    // Task fails, show a error message to the user.
+                    Toast.makeText(
+                        requireContext(),
+                        FirebaseHelper.validError(task.exception?.message ?: ""),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 // Task fails, hide the progress bar.
                 binding.progressBar.isVisible = false

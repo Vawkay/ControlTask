@@ -7,6 +7,7 @@
     <string name="hint_email" translatable="false">seuemail@email.com</string>
     <string name="hint_password" translatable="false">********</string>
     <string name="text_register_account" translatable="false">Criar Conta</string>
+    <string name="error_generic" translatable="false">Ocorreu um erro, por favor tente novamente mais tarde</string>
 
     <!-- Login Fragment -->
 
@@ -18,5 +19,17 @@
     <string name="text_recover_recover_fragment" translatable="false">Recuperar conta</string>
     <string name="text_button_recover_fragment" translatable="false">Enviar e-mail</string>
 
+    <!-- Errors Firebase Authentication -->
+    <string name="account_not_registered_register_fragment" translatable="false">Nenhuma conta encontrada com esse e-mail</string>
+    <string name="invalid_email_register_fragment" translatable="false">E-mail inválido</string>
+    <string name="invalid_password_register_fragment" translatable="false">Senha inválida, tente novamente</string>
+    <string name="email_in_use_register_fragment" translatable="false">Este e-mail já está em uso</string>
+    <string name="strong_password_register_fragment" translatable="false">Insira uma senha mais forte com pelo menos 6 caracteres</string>
+    <string name="too_many_atempts_register_fragment" translatable="false">Bloqueado devido a muitas tentativas incorretas, tente novamente mais tarde ou solicite um reset de senha</string>
 
+    <!-- FormTask Fragment -->
+    <string name="text_title_form_task_fragment" translatable="false">Nova Tarefa</string>
+    <string name="text_task_form_task_fragment" translatable="false">Tarefa</string>
+    <string name="text_status_form_task_fragment" translatable="false">Status</string>
+    <string name="text_btn_save_task_form_task_fragment" translatable="false">Salvar</string>
 </resources>

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.controltask.R
 import com.example.controltask.databinding.FragmentRegisterBinding
+import com.example.controltask.helper.FirebaseHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -69,6 +70,11 @@ class RegisterFragment : Fragment() {
                     // Sign in success, take the user to the home screen
                     findNavController().navigate(R.id.action_global_homeFragment)
                 } else {
+                    Toast.makeText(
+                        requireContext(),
+                        FirebaseHelper.validError(task.exception?.message ?: ""),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     // If sign in fails, hide the progress bar.
                     binding.progressBar.isVisible = false
                 }
