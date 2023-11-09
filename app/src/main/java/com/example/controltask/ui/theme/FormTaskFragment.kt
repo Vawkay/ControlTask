@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.controltask.R
 import com.example.controltask.databinding.FragmentFormTaskBinding
+import com.example.controltask.helper.FirebaseHelper
 import com.example.controltask.model.Task
 
 
@@ -72,7 +74,46 @@ class FormTaskFragment : Fragment() {
     }
 
     private fun saveTask(){
+        FirebaseHelper
+            .getDatabase()
+            .child("task")
+            .child(FirebaseHelper.getIdUser() ?: "")
+            .child(task.id)
+            .setValue(task)
+            .addOnCompleteListener { task ->
+                if(task.isSuccessful){
+                    if (newTask) { // NOVA TAREFA
 
+                        findNavController().popBackStack()
+                        Toast.makeText(
+                            requireContext(),
+                            "Tarefa salva com sucesso.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    } else { // EDITANDO TAREFA
+                        binding.progressBar.isVisible = false
+                        Toast.makeText(
+                            requireContext(),
+                            "Tarefa atualizada com sucesso.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Erro ao salvar a tarefa.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }.addOnFailureListener {
+                binding.progressBar.isVisible = false
+                Toast.makeText(
+                    requireContext(),
+                    "Erro ao salvar a tarefa.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
     override fun onDestroyView() {
