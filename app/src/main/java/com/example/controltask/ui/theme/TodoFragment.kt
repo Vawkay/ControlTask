@@ -1,10 +1,11 @@
 package com.example.controltask.ui.theme
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -19,15 +20,14 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
-
 class TodoFragment : Fragment() {
 
     private var _binding: FragmentTodoBinding? = null
     private val binding get() = _binding!!
 
-    private val taskList = mutableListOf<Task>()
-
     private lateinit var taskAdapter: TaskAdapter
+
+    private val taskList = mutableListOf<Task>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,35 +60,37 @@ class TodoFragment : Fragment() {
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        for (snap in snapshot.children){
+                        for (snap in snapshot.children) {
                             val task = snap.getValue(Task::class.java) as Task
-
                             if (task.status == 0) taskList.add(task)
                         }
 
                         binding.textInfo.text = ""
-                        initAdapter()
+                        initAdapter()  // Certifique-se de que este método está sendo chamado
+                        Log.d("TodoFragment", "initAdapter() called")
                     } else {
                         binding.textInfo.text = "Nenhuma tarefa cadastrada."
                     }
 
                     binding.progressBar.isVisible = false
-
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(requireContext(), "Erro", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Erro.", Toast.LENGTH_SHORT).show()
                 }
             })
     }
 
-    private fun initAdapter() {
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun initAdapter() {  // Esse é o metodo que vincula a lista de tarefas ao adapter
         binding.rvTask.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTask.setHasFixedSize(true)
         taskAdapter = TaskAdapter(requireContext(), taskList) { task, int ->
-            
+
         }
         binding.rvTask.adapter = taskAdapter
+        taskAdapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

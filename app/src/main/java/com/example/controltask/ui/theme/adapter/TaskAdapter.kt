@@ -24,7 +24,7 @@ class TaskAdapter (
         val SELECT_NEXT: Int = 5
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskAdapter.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
             ItemAdapterBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -39,9 +39,9 @@ class TaskAdapter (
 
         holder.binding.textDescription.text = task.description
 
-        holder.binding.btnDelete.setOnClickListener { taskSelected (task, SELECT_REMOVE) }
-        holder.binding.btnEdit.setOnClickListener { taskSelected (task, SELECT_EDIT) }
-        holder.binding.btnDetails.setOnClickListener { taskSelected (task, SELECT_DETAILS) }
+        holder.binding.btnDelete.setOnClickListener { taskSelected(task, SELECT_REMOVE) }
+        holder.binding.btnEdit.setOnClickListener { taskSelected(task, SELECT_EDIT) }
+        holder.binding.btnDetails.setOnClickListener { taskSelected(task, SELECT_DETAILS) }
 
         when(task.status) {
             0 -> {
@@ -52,10 +52,11 @@ class TaskAdapter (
                 )
 
                 holder.binding.ibNext.setOnClickListener { taskSelected(task, SELECT_NEXT) }
+
             }
             1 -> {
                 holder.binding.ibBack.setColorFilter(
-                    ContextCompat.getColor(context, R.color.color_done)
+                    ContextCompat.getColor(context, R.color.color_todo)
                 )
                 holder.binding.ibNext.setColorFilter(
                     ContextCompat.getColor(context, R.color.color_done)
@@ -63,17 +64,15 @@ class TaskAdapter (
 
                 holder.binding.ibBack.setOnClickListener { taskSelected(task, SELECT_BACK) }
                 holder.binding.ibNext.setOnClickListener { taskSelected(task, SELECT_NEXT) }
-
             }
             else -> {
-                holder.binding.ibBack.isVisible = false
+                holder.binding.ibNext.isVisible = false
 
                 holder.binding.ibBack.setColorFilter(
-                    ContextCompat.getColor(context, R.color.color_doing)
+                    ContextCompat.getColor(context, R.color.color_done)
                 )
 
                 holder.binding.ibBack.setOnClickListener { taskSelected(task, SELECT_BACK) }
-
             }
         }
     }

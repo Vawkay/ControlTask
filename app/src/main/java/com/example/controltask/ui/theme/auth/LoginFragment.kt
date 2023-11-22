@@ -1,6 +1,7 @@
 package com.example.controltask.ui.theme.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,6 +74,7 @@ class LoginFragment : Fragment() {
         }
     }
 
+    // Exemplo de adição de logs no LoginFragment.kt
     private fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
@@ -81,6 +83,7 @@ class LoginFragment : Fragment() {
                     findNavController().navigate(R.id.action_global_homeFragment)
                 } else {
                     // If sign in fails, display a message to the user.
+                    Log.e("LoginFragment", "Login failed: ${task.exception}")
                     Toast.makeText(
                         requireContext(),
                         FirebaseHelper.validError(task.exception?.message ?: ""),
