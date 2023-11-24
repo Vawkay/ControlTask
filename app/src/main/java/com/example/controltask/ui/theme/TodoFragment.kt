@@ -60,18 +60,21 @@ class TodoFragment : Fragment() {
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
+
+                        taskList.clear()
                         for (snap in snapshot.children) {
                             val task = snap.getValue(Task::class.java) as Task
+
                             if (task.status == 0) taskList.add(task)
                         }
-
                         binding.textInfo.text = ""
-                        initAdapter()  // Certifique-se de que este método está sendo chamado
-                        Log.d("TodoFragment", "initAdapter() called")
+
+                        taskList.reverse()
+                        initAdapter()  // Chama o initAdapter apenas se houver tarefas
                     } else {
+
                         binding.textInfo.text = "Nenhuma tarefa cadastrada."
                     }
-
                     binding.progressBar.isVisible = false
                 }
 
@@ -81,16 +84,14 @@ class TodoFragment : Fragment() {
             })
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun initAdapter() {  // Esse é o metodo que vincula a lista de tarefas ao adapter
+    private fun initAdapter() {
         binding.rvTask.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTask.setHasFixedSize(true)
         taskAdapter = TaskAdapter(requireContext(), taskList) { task, int ->
 
         }
+
         binding.rvTask.adapter = taskAdapter
-        taskAdapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
