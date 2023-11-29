@@ -8,12 +8,17 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.controltask.R
 import com.example.controltask.databinding.FragmentFormTaskBinding
+import com.example.controltask.helper.BaseFragment
 import com.example.controltask.helper.FirebaseHelper
+import com.example.controltask.helper.initToolbar
 import com.example.controltask.model.Task
 
-class FormTaskFragment : Fragment() {
+class FormTaskFragment : BaseFragment() {
+
+    private val args: FormTaskFragmentArgs by navArgs()
 
     private var _binding: FragmentFormTaskBinding? = null
     private val binding get() = _binding!!
@@ -34,7 +39,47 @@ class FormTaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initToolbar(binding.toolbar)
+
         initListeners()
+
+        getArgs()
+
+    }
+
+    private fun getArgs() {
+        args.task.let {
+            if(it != null) {
+                task = it
+                configTask()
+            }
+        }
+    }
+
+    private fun configTask() {
+        newTask = false
+        statusTask = task.status
+        binding.textToolbar.text = getString(R.string.text_edit_task_form_task_fragment)
+
+        binding.edtDescription.setText(task.description)
+        setStatus()
+    }
+
+    private fun setStatus() {
+        binding.radioGroup.check(
+
+            when(task.status){
+                0 -> {
+                    R.id.rbTodo
+                }
+                1 -> {
+                    R.id.rbDoing
+                }
+                else -> {
+                    R.id.rbDone
+                }
+            }
+        )
 
     }
 
@@ -54,6 +99,8 @@ class FormTaskFragment : Fragment() {
         val description = binding.edtDescription.text.toString().trim()
 
         if (description.isNotEmpty()) {
+
+            hideKeyboard()
 
             binding.progressBar.isVisible = true
 

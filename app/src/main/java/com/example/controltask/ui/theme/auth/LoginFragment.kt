@@ -11,13 +11,15 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.controltask.R
 import com.example.controltask.databinding.FragmentLoginBinding
+import com.example.controltask.helper.BaseFragment
 import com.example.controltask.helper.FirebaseHelper
+import com.example.controltask.helper.showBottomSheet
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
@@ -61,16 +63,21 @@ class LoginFragment : Fragment() {
         if (email.isNotEmpty()) {
             if (password.isNotEmpty()) {
 
+                hideKeyboard()
+
                 binding.progressBar.isVisible = true
 
                 loginUser(email, password)
 
             } else {
-                Toast.makeText(requireContext(), "Informe sua senha", Toast.LENGTH_SHORT).show()
+                showBottomSheet(
+                    message = R.string.text_password_empty_login_fragment
+                )
             }
-
         } else {
-            Toast.makeText(requireContext(), "Informe seu e-mail", Toast.LENGTH_SHORT).show()
+            showBottomSheet(
+                message = R.string.text_email_empty_login_fragment
+            )
         }
     }
 
@@ -83,12 +90,10 @@ class LoginFragment : Fragment() {
                     findNavController().navigate(R.id.action_global_homeFragment)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.e("LoginFragment", "Login failed: ${task.exception}")
-                    Toast.makeText(
-                        requireContext(),
-                        FirebaseHelper.validError(task.exception?.message ?: ""),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showBottomSheet(
+                        message = FirebaseHelper.validError(task.exception?.message ?: "")
+                    )
+
                     // If sign in fails, hide the progress bar."
                     binding.progressBar.isVisible = false
                 }

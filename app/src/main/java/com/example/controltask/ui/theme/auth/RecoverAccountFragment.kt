@@ -7,13 +7,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.example.controltask.R
 import com.example.controltask.databinding.FragmentRecoverAccountBinding
+import com.example.controltask.helper.BaseFragment
 import com.example.controltask.helper.FirebaseHelper
+import com.example.controltask.helper.initToolbar
+import com.example.controltask.helper.showBottomSheet
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class RecoverAccountFragment : Fragment() {
+class RecoverAccountFragment : BaseFragment() {
 
     private var _binding: FragmentRecoverAccountBinding? = null
     private val binding get() = _binding!!
@@ -32,6 +36,8 @@ class RecoverAccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initToolbar(binding.toolbar)
+
         auth = Firebase.auth
 
         initClicks()
@@ -48,12 +54,16 @@ class RecoverAccountFragment : Fragment() {
         var email = binding.edtEmail.text.toString().trim()
 
         if (email.isNotEmpty()) {
+
+            hideKeyboard()
             binding.progressBar.isVisible = true
 
             recoverAccountUser(email)
 
         } else {
-            Toast.makeText(requireContext(), "Informe seu e-mail", Toast.LENGTH_SHORT).show()
+            showBottomSheet(
+                message = R.string.text_email_empty_recover_account_fragment
+            )
         }
     }
 
@@ -62,15 +72,14 @@ class RecoverAccountFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Task in success, show a success message to the user.
-                    Toast.makeText(requireContext(), "E-mail enviado com sucesso", Toast.LENGTH_SHORT).show()
+                    showBottomSheet(
+                        message = R.string.text_email_send_sucess_recover_account_fragment
+                    )
 
                 } else {
-                    // Task fails, show a error message to the user.
-                    Toast.makeText(
-                        requireContext(),
-                        FirebaseHelper.validError(task.exception?.message ?: ""),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showBottomSheet(
+                        message = FirebaseHelper.validError(task.exception?.message ?: "")
+                    )
                 }
                 // Task fails, hide the progress bar.
                 binding.progressBar.isVisible = false

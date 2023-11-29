@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.controltask.R
 import com.example.controltask.databinding.FragmentDoingBinding
+import com.example.controltask.helper.BaseFragment
 import com.example.controltask.helper.FirebaseHelper
 import com.example.controltask.model.Task
 import com.example.controltask.ui.theme.adapter.TaskAdapter
@@ -17,7 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 
-class DoingFragment : Fragment() {
+class DoingFragment : BaseFragment() {
 
     private var _binding: FragmentDoingBinding? = null
     private val binding get() = _binding!!
@@ -55,14 +58,12 @@ class DoingFragment : Fragment() {
 
                             if (task.status == 1) taskList.add(task)
                         }
-                        binding.textInfo.text = ""
 
                         taskList.reverse()
                         initAdapter()  // Chama o initAdapter apenas se houver tarefas
-                    } else {
-
-                        binding.textInfo.text = "Nenhuma tarefa cadastrada."
                     }
+
+                    tasksEmpty()
                     binding.progressBar.isVisible = false
                 }
 
@@ -72,14 +73,82 @@ class DoingFragment : Fragment() {
             })
     }
 
+    private fun tasksEmpty() {
+        binding.textInfo.text = if (taskList.isEmpty()) {
+            getText(R.string.text_task_list_empty_doing_fragment)
+        } else {
+            ""
+        }
+    }
+
     private fun initAdapter() {
         binding.rvTask.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTask.setHasFixedSize(true)
-        taskAdapter = TaskAdapter(requireContext(), taskList) { task, int ->
-
+        taskAdapter = TaskAdapter(requireContext(), taskList) { task, select ->
+            optionSelect(task, select)
         }
 
         binding.rvTask.adapter = taskAdapter
+    }
+
+    private fun optionSelect(task: Task, select: Int) {
+        when (select) {
+            TaskAdapter.SELECT_REMOVE -> {
+                deleteTask(task)
+            }
+            TaskAdapter.SELECT_EDIT -> {
+                val action = HomeFragmentDirections
+                    .actionHomeFragmentToFormTaskFragment(task)
+                findNavController().navigate(action)
+            }
+            TaskAdapter.SELECT_NEXT -> {
+                task.status = 2
+                updateTask(task)
+            }
+            TaskAdapter.SELECT_BACK-> {
+                task.status = 0
+                updateTask(task)
+            }
+        }
+    }
+
+    private fun updateTask(task: Task) {
+        FirebaseHelper
+            .getDatabase()
+            .child("task")
+            .child(FirebaseHelper.getIdUser() ?: "")
+            .child(task.id)
+            .setValue(task)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Tarefa atualizada com sucesso.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Erro ao salvar tarefa.",
+                        Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }.addOnFailureListener {
+                binding.progressBar.isVisible = false
+                Toast.makeText(requireContext(), "Erro ao salvar tarefa.", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun deleteTask(task: Task) {
+        FirebaseHelper
+            .getDatabase()
+            .child("task")
+            .child(FirebaseHelper.getIdUser() ?: "")
+            .child(task.id)
+            .removeValue()
+
+        taskList.remove(task)
+        taskAdapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

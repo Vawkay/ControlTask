@@ -14,10 +14,14 @@
     <string name="text_button_login_fragment" translatable="false">Login</string>
     <string name="text_button_register_fragment" translatable="false">Criar conta</string>
     <string name="text_recover_login_fragment" translatable="false">Recuperar conta</string>
+    <string name="text_password_empty_login_fragment" translatable="false">Informe sua senha.</string>
+    <string name="text_email_empty_login_fragment" translatable="false">Informe seu e-mail.</string>
 
     <!-- Recover Account Fragment -->
     <string name="text_recover_recover_fragment" translatable="false">Recuperar conta</string>
     <string name="text_button_recover_fragment" translatable="false">Enviar e-mail</string>
+    <string name="text_email_empty_recover_account_fragment" translatable="false">Informe seu e-mail.</string>
+    <string name="text_email_send_sucess_recover_account_fragment" translatable="false">E-mail enviado com sucesso</string>
 
     <!-- Errors Firebase Authentication -->
     <string name="account_not_registered_register_fragment" translatable="false">Nenhuma conta encontrada com esse e-mail</string>
@@ -32,4 +36,20 @@
     <string name="text_description_form_task_fragment" translatable="false">Descrição</string>
     <string name="text_status_form_task_fragment" translatable="false">Status</string>
     <string name="text_btn_save_task_form_task_fragment" translatable="false">Salvar</string>
+    <string name="text_edit_task_form_task_fragment" translatable="false">Editando tarefa...</string>
+
+
+    <!-- Todo Fragment -->
+    <string name="text_task_list_empty_todo_fragment" translatable="false">Nenhuma tarefa cadastrada.</string>
+
+    <!-- Doing Fragment -->
+    <string name="text_task_list_empty_doing_fragment" translatable="false">Nenhuma tarefa cadastrada.</string>
+
+    <!-- Done Fragment -->
+    <string name="text_task_list_empty_done_fragment" translatable="false">Nenhuma tarefa cadastrada.</string>
+
+    <!-- Bottom Sheet -->
+    <string name="text_title_bottom_sheet" translatable="false">Atenção!</string>
+    <string name="text_button_bottom_sheet" translatable="false">Entendi</string>
+
 </resources>
